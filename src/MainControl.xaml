@@ -158,7 +158,7 @@
                     <LineBreak />
                     <Run Text="说明：找到最近改动过的文件，并复制到目标目录。" />
                     <LineBreak />
-                    <Run Text="联系：dengfan@outlook.com" />
+                    <Run Text="网址：https://github.com/dengfan/LMFinder" />
             </TextBlock>
 
             <StackPanel Orientation="Horizontal"

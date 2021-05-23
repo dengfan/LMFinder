@@ -34,53 +34,34 @@ namespace LMFinder
                 MVM.TabsVmList = deserializer.Deserialize<ObservableCollection<TabViewModel>>(yamlText);
             }
 
-            if (MVM.TabsVmList == null)
+            if (MVM.TabsVmList != null && MVM.TabsVmList.Count > 0)
+            {
+                var cvm = MVM.TabsVmList.FirstOrDefault(t => t.IsCurrent);
+                if (cvm != null)
+                {
+                    MVM.CurrentTabViewModel = cvm;
+                }
+            }
+            else
             {
                 MVM.TabsVmList = new ObservableCollection<TabViewModel>();
 
                 var tvm1 = new TabViewModel
                 {
                     Title = "未命名1",
-                    FileFilter = "*.xaml;",
-                    IsCurrent = true,
+                    FileFilter = "*.*;",
+                    Hours = "24",
                 };
                 MVM.TabsVmList.Add(tvm1);
-
-                var tvm2 = new TabViewModel
-                {
-                    Title = "未命名2",
-                    FileFilter = "*.cs;",
-                    Hours = "2",
-                };
-                MVM.TabsVmList.Add(tvm2);
-
-                for (int i = 1; i < 20; i++)
-                {
-                    var tvm = new TabViewModel
-                    {
-                        Title = "未命名" + i,
-                        FileFilter = "*.txt;",
-                        Hours = i.ToString(),
-                    };
-                    MVM.TabsVmList.Add(tvm);
-                }
-
-                //var cvm = MVM.TabsVmList.FirstOrDefault(t => t.IsCurrent);
-                //if (cvm == null)
-                //{
-                //    cvm = MVM.TabsVmList.First();
-                //}
-
                 MVM.CurrentTabViewModel = tvm1;
-                //MainControl.DataContext = tvm1;
             }
 
-            //var newTab = new TabViewModel
-            //{
-            //    Type = 1,
-            //    Title = "+",
-            //};
-            //MVM.TabsVmList.Add(newTab);
+            var newTab = new TabViewModel
+            {
+                Type = 1,
+                Title = "+",
+            };
+            MVM.TabsVmList.Add(newTab);
         }
 
         /// <summary>
@@ -136,13 +117,27 @@ namespace LMFinder
                     switch (vm.Type)
                     {
                         case 1: // 新建一个Tab
-
+                            {
+                                ResetTabCurrent();
+                                int n = MVM.TabsVmList.Count(t => t.Title.StartsWith("未命名"));
+                                if (n == 0) n = 1;
+                                var nvm = new TabViewModel
+                                {
+                                    Title = string.Concat("未命名", n + 1),
+                                    FileFilter = "*.*;",
+                                    Hours = "12",
+                                    IsCurrent = true,
+                                };
+                                MVM.TabsVmList.Insert(MVM.TabsVmList.Count - 1, nvm);
+                                MVM.CurrentTabViewModel = nvm;
+                            }
                             break;
-                        default:
-                            //ResetTabCurrent();
-                            MVM.CurrentTabViewModel = vm;
-                            //MainControl.DataContext = vm;
-                            //MVM.CurrentTabViewModel.IsCurrent = true;
+                        default: // 切换Tab
+                            {
+                                ResetTabCurrent();
+                                vm.IsCurrent = true;
+                                MVM.CurrentTabViewModel = vm;
+                            }
                             break;
                     }
                 }
