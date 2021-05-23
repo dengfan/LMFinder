@@ -1,0 +1,5 @@
+﻿生成后事件命令行：
+
+
+set LIBZ=$(SolutionDir)packages\LibZ.Bootstrap.1.2.0.0\tools\libz.exe
+%LIBZ% inject-dll --assembly LMFinder.exe --include *.dll --move

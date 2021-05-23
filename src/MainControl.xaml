@@ -189,7 +189,7 @@
                        Foreground="Red" />
             <StackPanel Grid.Column="1"
                         Orientation="Horizontal"
-                        HorizontalAlignment="Center">
+                        HorizontalAlignment="Left">
                 <Button x:Name="FindButton"
                         IsEnabled="{Binding SearchButtonIsEnabled}"
                         Click="SearchButton_Click">
