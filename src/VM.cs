@@ -192,6 +192,21 @@ namespace LMFinder
             }
         }
 
+        private bool _isKeepDir = true;
+
+        /// <summary>
+        /// 是否保持目录结构
+        /// </summary>
+        public bool IsKeepDir
+        {
+            get { return _isKeepDir; }
+            set
+            {
+                _isKeepDir = value;
+                OnPropertyChanged("IsKeepDir");
+            }
+        }
+
         [YamlIgnore]
         public int Type { get; set; } = 0; // 仅用来区分是否是新增按钮
     }

@@ -257,6 +257,10 @@ namespace LMFinder
                         if (File.Exists(sourceFilePath))
                         {
                             var destFilePath = string.Concat(ddir, mi.FilePath);
+                            if (_vm.IsKeepDir == false)
+                            {
+                                destFilePath = Path.Combine(ddir, mi.FileName);
+                            }
                             var di = Directory.GetParent(destFilePath);
                             if (di.Exists == false)
                             {
@@ -364,6 +368,11 @@ namespace LMFinder
             {
                 _vm.LmList.Add(item);
             }
+
+            Dispatcher.BeginInvoke(new Action(() =>
+            {
+                ListFilterTextBox.Focus();
+            }), DispatcherPriority.ApplicationIdle);
         }
 
         /// <summary>
@@ -439,6 +448,6 @@ namespace LMFinder
             }
         }
 
-        
+
     }
 }

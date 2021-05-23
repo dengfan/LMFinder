@@ -150,17 +150,6 @@
                 </ListBox.ItemTemplate>
             </ListBox>
 
-            <TextBlock Visibility="{Binding ReadMeVisibility}"
-                       TextWrapping="Wrap"
-                       Margin="4"
-                       ScrollViewer.VerticalScrollBarVisibility="Auto">
-                    <Run Text="版本：2.2.0" />
-                    <LineBreak />
-                    <Run Text="说明：找到最近改动过的文件，并复制到目标目录。" />
-                    <LineBreak />
-                    <Run Text="网址：https://github.com/dengfan/LMFinder" />
-            </TextBlock>
-
             <StackPanel Orientation="Horizontal"
                         HorizontalAlignment="Right"
                         VerticalAlignment="Bottom"
@@ -172,10 +161,22 @@
                          Width="140"
                          KeyUp="ListFilterTextBox_KeyUp" />
                 <Button Visibility="{Binding Text,ElementName=ListFilterTextBox,Converter={StaticResource ClearListFilterButtonConverter}}"
+                        Content="X"
                         Click="ResetListFilterButton_Click">
-                    <AccessText>_R</AccessText>
                 </Button>
             </StackPanel>
+
+            <TextBlock Visibility="{Binding ReadMeVisibility}"
+                       Background="White"
+                       TextWrapping="Wrap"
+                       Margin="4"
+                       ScrollViewer.VerticalScrollBarVisibility="Auto">
+                    <Run Text="版本：2.2.0" />
+                    <LineBreak />
+                    <Run Text="说明：找到最近改动过的文件，并复制到目标目录。" />
+                    <LineBreak />
+                    <Run Text="网址：https://github.com/dengfan/LMFinder" />
+            </TextBlock>
         </Grid>
 
         <StackPanel Grid.Row="2"
@@ -202,7 +203,7 @@
                         Click="CopyButton_Click">
                     <AccessText>复制到目标目录(_T)</AccessText>
                 </Button>
-                <CheckBox IsChecked="True"
+                <CheckBox IsChecked="{Binding IsKeepDir}"
                           Content="复制时保持目录层次"
                           VerticalAlignment="Center"
                           Margin="8 0 0 0" />
