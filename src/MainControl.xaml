@@ -1,0 +1,219 @@
+﻿<UserControl x:Class="LMFinder.MainControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:LMFinder"
+             mc:Ignorable="d"
+             d:DesignHeight="450"
+             d:DesignWidth="800"
+             DataContextChanged="UserControl_DataContextChanged">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Row="0">
+            <Grid Margin="0 0 0 4">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="4" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <TextBlock Text="来源目录 (必填)"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Center" />
+                <TextBox Grid.Column="1"
+                         Text="{Binding SrcDir}"
+                         HorizontalAlignment="Stretch"
+                         VerticalAlignment="Center"
+                         MouseDoubleClick="TextBox_MouseDoubleClick" />
+                <Button Grid.Column="3"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Center"
+                        Click="SrcDirButton_Click">
+                    <AccessText>…(_L)</AccessText>
+                </Button>
+            </Grid>
+
+            <Grid Margin="0 0 0 4">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="4" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <TextBlock Text="目标目录 (必填)"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Center" />
+                <TextBox Grid.Column="1"
+                         Text="{Binding DestDir}"
+                         HorizontalAlignment="Stretch"
+                         VerticalAlignment="Center"
+                         MouseDoubleClick="TextBox_MouseDoubleClick" />
+                <Button Grid.Column="3"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Center"
+                        Click="DestDirButton_Click">
+                    <AccessText>…(_M)</AccessText>
+                </Button>
+            </Grid>
+
+            <Grid Margin="0 0 0 4">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <TextBlock Text="文件类型 (必填)"
+                           ToolTip="填文件类型，如 *.txt;*.xml;*.exe"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Center" />
+                <TextBox Grid.Column="1"
+                         Text="{Binding FileFilter}"
+                         ToolTip="填文件类型，如 *.txt;*.xml;*.exe"
+                         HorizontalAlignment="Stretch"
+                         VerticalAlignment="Center" />
+            </Grid>
+
+            <Grid Margin="0 0 0 4">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <TextBlock Text="排除类型 (选填)"
+                           Foreground="Gray"
+                           ToolTip="填目录名和文件类型，如 big/small;bin;*.txt"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Center" />
+                <TextBox Grid.Column="1"
+                         Text="{Binding ExcludeFilter}"
+                         ToolTip="填目录名和文件类型，如 big/small;bin;*.txt"
+                         HorizontalAlignment="Stretch"
+                         VerticalAlignment="Center" />
+            </Grid>
+
+            <Grid Margin="0 0 0 4">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <TextBlock Text="时间范围 (必填)"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Center" />
+                <StackPanel Grid.Column="1"
+                            Orientation="Horizontal"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Center">
+                    <TextBox x:Name="HoursTextBox"
+                             Text="{Binding Hours}"
+                             Width="48"
+                             VerticalAlignment="Center" />
+                    <TextBlock Text="小时内改动过"
+                               VerticalAlignment="Center"
+                               Margin="4 0 0 0" />
+                    <Button Content="+1"
+                            Margin="4 0"
+                            Click="PlusButton_Click" />
+                    <Button Content="-1"
+                            Margin="4 0"
+                            Click="MinusButton_Click" />
+                    <Button Content="+12"
+                            Margin="4 0"
+                            Click="PlusButton_Click" />
+                    <Button Content="-12"
+                            Margin="4 0"
+                            Click="MinusButton_Click" />
+                </StackPanel>
+            </Grid>
+        </StackPanel>
+        <Grid Grid.Row="1"
+              Margin="0 4">
+
+            <ListBox x:Name="FileListBox"
+                     ItemsSource="{Binding LmList}"
+                     HorizontalContentAlignment="Stretch"
+                     SelectionMode="Extended">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <Grid>
+                            <TextBlock Text="{Binding FilePath}"
+                                       HorizontalAlignment="Left"
+                                       VerticalAlignment="Center" />
+                            <TextBlock Text="{Binding LastWriteTimeStr}"
+                                       HorizontalAlignment="Right"
+                                       VerticalAlignment="Center" />
+                        </Grid>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+
+            <TextBlock Visibility="{Binding ReadMeVisibility}"
+                       TextWrapping="Wrap"
+                       Margin="4"
+                       ScrollViewer.VerticalScrollBarVisibility="Auto">
+                    <Run Text="版本：2.2.0" />
+                    <LineBreak />
+                    <Run Text="说明：找到最近改动过的文件，并复制到目标目录。" />
+                    <LineBreak />
+                    <Run Text="联系：dengfan@outlook.com" />
+            </TextBlock>
+
+            <StackPanel Orientation="Horizontal"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Bottom"
+                        Margin="0 0 24 8"
+                        Opacity="0.8">
+                <Label Content="文件名搜索" />
+                <TextBox x:Name="ListFilterTextBox"
+                         Margin="4 0"
+                         Width="140"
+                         KeyUp="ListFilterTextBox_KeyUp" />
+                <Button Visibility="{Binding Text,ElementName=ListFilterTextBox,Converter={StaticResource ClearListFilterButtonConverter}}"
+                        Click="ResetListFilterButton_Click">
+                    <AccessText>_R</AccessText>
+                </Button>
+            </StackPanel>
+        </Grid>
+
+        <StackPanel Grid.Row="2"
+                    VerticalAlignment="Bottom">
+            <TextBlock Text="{Binding TipsText}"
+                       HorizontalAlignment="Center"
+                       Margin="0 0 0 4"
+                       Foreground="Red" />
+            <StackPanel Grid.Column="1"
+                        Orientation="Horizontal"
+                        HorizontalAlignment="Center">
+                <Button x:Name="FindButton"
+                        IsEnabled="{Binding SearchButtonIsEnabled}"
+                        Click="SearchButton_Click">
+                    <AccessText>查找(_F)</AccessText>
+                </Button>
+                <Button IsEnabled="{Binding SelectAllButtonIsEnabled}"
+                        Margin="8 0 0 0"
+                        Click="SelectAllButton_Click">
+                    <AccessText>全选/全不选(_X)</AccessText>
+                </Button>
+                <Button IsEnabled="{Binding CopyButtonIsEnabled}"
+                        Margin="8 0 0 0"
+                        Click="CopyButton_Click">
+                    <AccessText>复制到目标目录(_T)</AccessText>
+                </Button>
+                <CheckBox IsChecked="True"
+                          Content="复制时保持目录层次"
+                          VerticalAlignment="Center"
+                          Margin="8 0 0 0" />
+            </StackPanel>
+        </StackPanel>
+
+        <Button Grid.Row="2"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Bottom"
+                Click="SaveButton_Click">
+            <AccessText>保存配置(_S)</AccessText>
+        </Button>
+    </Grid>
+</UserControl>
