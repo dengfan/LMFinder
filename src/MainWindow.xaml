@@ -11,31 +11,69 @@
         Width="800"
         MinWidth="720"
         MinHeight="320">
-    <Grid Margin="8">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
+    <Grid>
+        <Grid Margin="8">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
 
-        <ItemsControl ItemsSource="{Binding TabsVmList}"
-                      HorizontalAlignment="Left"
-                      Margin="0 0 0 4">
-            <ItemsControl.ItemTemplate>
-                <DataTemplate>
-                    <Button Content="{Binding Title}"
-                            Margin="0 0 4 4"
-                            Background="{Binding IsCurrent, Converter={StaticResource TabIsCurrentConverter}}"
-                            Click="TabButton_Click" />
-                </DataTemplate>
-            </ItemsControl.ItemTemplate>
-            <ItemsControl.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <WrapPanel IsItemsHost="True" />
-                </ItemsPanelTemplate>
-            </ItemsControl.ItemsPanel>
-        </ItemsControl>
+            <ItemsControl Grid.Row="0"
+                          ItemsSource="{Binding TabsVmList}"
+                          HorizontalAlignment="Left"
+                          Margin="0 0 0 4">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Button Content="{Binding Title}"
+                                Margin="0 0 4 4"
+                                Background="{Binding IsCurrent, Converter={StaticResource TabIsCurrentConverter}}"
+                                Click="TabButton_Click">
+                            <Button.ContextMenu>
+                                <ContextMenu>
+                                    <MenuItem Header="重命名"
+                                              Click="TabButton_Rename_Click" />
+                                    <MenuItem Header="删除"
+                                              Click="TabButton_Delete_Click" />
+                                </ContextMenu>
+                            </Button.ContextMenu>
+                        </Button>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel IsItemsHost="True" />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+            </ItemsControl>
 
-        <local:MainControl Grid.Row="1"
-                           DataContext="{Binding CurrentTabViewModel}" />
+            <local:MainControl Grid.Row="1"
+                               DataContext="{Binding CurrentTabViewModel}" />
+        </Grid>
+
+        <Grid x:Name="Dialog1"
+              Visibility="Collapsed"
+              Background="#66000000">
+            <Border Background="White"
+                    BorderBrush="Gray"
+                    BorderThickness="1"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Padding="12"
+                    Width="300">
+                <StackPanel>
+                    <TextBlock Text="重命名" />
+                    <TextBox x:Name="Dialog1_RenameTextBox"
+                             Margin="0 8" />
+                    <StackPanel Orientation="Horizontal"
+                                HorizontalAlignment="Right">
+                        <Button Content="确定"
+                                Click="Dialog1_Confirm_Click" />
+                        <Button Content="取消"
+                                Margin="8 0 0 0"
+                                Click="Dialog1_Cancel_Click" />
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+        </Grid>
     </Grid>
 </Window>

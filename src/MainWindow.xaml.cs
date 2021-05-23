@@ -44,16 +44,7 @@ namespace LMFinder
             }
             else
             {
-                MVM.TabsVmList = new ObservableCollection<TabViewModel>();
-
-                var tvm1 = new TabViewModel
-                {
-                    Title = "未命名1",
-                    FileFilter = "*.*;",
-                    Hours = "24",
-                };
-                MVM.TabsVmList.Add(tvm1);
-                MVM.CurrentTabViewModel = tvm1;
+                NewTab();
             }
 
             var newTab = new TabViewModel
@@ -108,6 +99,25 @@ namespace LMFinder
             }
         }
 
+        private void NewTab()
+        {
+            ResetTabCurrent();
+
+            int n = MVM.TabsVmList.Count(t => t.Title.StartsWith("未命名"));
+            var nvm = new TabViewModel
+            {
+                Title = string.Concat("未命名", n + 1),
+                FileFilter = "*.*;",
+                Hours = "12",
+                IsCurrent = true,
+            };
+
+            var i = MVM.TabsVmList.Count - 1;
+            if (i < 0) i = 0;
+            MVM.TabsVmList.Insert(i, nvm);
+            MVM.CurrentTabViewModel = nvm;
+        }
+
         private void TabButton_Click(object sender, RoutedEventArgs e)
         {
             if (sender is Button btn)
@@ -118,18 +128,7 @@ namespace LMFinder
                     {
                         case 1: // 新建一个Tab
                             {
-                                ResetTabCurrent();
-                                int n = MVM.TabsVmList.Count(t => t.Title.StartsWith("未命名"));
-                                if (n == 0) n = 1;
-                                var nvm = new TabViewModel
-                                {
-                                    Title = string.Concat("未命名", n + 1),
-                                    FileFilter = "*.*;",
-                                    Hours = "12",
-                                    IsCurrent = true,
-                                };
-                                MVM.TabsVmList.Insert(MVM.TabsVmList.Count - 1, nvm);
-                                MVM.CurrentTabViewModel = nvm;
+                                NewTab();
                             }
                             break;
                         default: // 切换Tab
@@ -142,6 +141,71 @@ namespace LMFinder
                     }
                 }
             }
+        }
+
+        private void TabButton_Rename_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is MenuItem btn)
+            {
+                if (btn.DataContext is TabViewModel vm)
+                {
+                    ShowDialog1(vm);
+                }
+            }
+        }
+
+        private void TabButton_Delete_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is MenuItem btn)
+            {
+                if (btn.DataContext is TabViewModel vm)
+                {
+                    MVM.TabsVmList.Remove(vm);
+
+                    if (MVM.TabsVmList.Count(t => t.IsCurrent) == 0)
+                    {
+                        var fvm = MVM.TabsVmList.FirstOrDefault();
+                        if (fvm != null)
+                        {
+                            fvm.IsCurrent = true;
+                            MVM.CurrentTabViewModel = fvm;
+                        }
+                    }
+
+                    if (MVM.TabsVmList.Count(t => t.Type == 0) == 0)
+                    {
+                        NewTab();
+                    }
+                }
+            }
+        }
+
+        private void ShowDialog1(TabViewModel vm)
+        {
+            Dialog1.DataContext = vm;
+            Dialog1.Visibility = Visibility.Visible;
+            Dialog1_RenameTextBox.Text = vm.Title;
+            Dialog1_RenameTextBox.SelectAll();
+            Dialog1_RenameTextBox.Focus();
+        }
+
+        private void Dialog1_Confirm_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is Button btn && btn.DataContext is TabViewModel vm)
+            {
+                vm.Title = Dialog1_RenameTextBox.Text.Trim();
+            }
+
+            Dialog1_RenameTextBox.Text = string.Empty;
+            Dialog1.Visibility = Visibility.Collapsed;
+            Dialog1.DataContext = null;
+        }
+
+        private void Dialog1_Cancel_Click(object sender, RoutedEventArgs e)
+        {
+            Dialog1_RenameTextBox.Text = string.Empty;
+            Dialog1.Visibility = Visibility.Collapsed;
+            Dialog1.DataContext = null;
         }
     }
 }

@@ -23,6 +23,9 @@ namespace LMFinder
             InitializeComponent();
 
             AddHandler(Keyboard.KeyDownEvent, (KeyEventHandler)HandleKeyDownEvent);
+            ReadMeTextBox.Text = @"版本：2.2.0
+说明：找到最近改动过的文件，并复制到目标目录。
+网址：https://github.com/dengfan/LMFinder";
         }
 
         private void UserControl_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)

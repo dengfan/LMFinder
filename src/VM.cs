@@ -23,7 +23,7 @@ namespace LMFinder
         }
         #endregion
 
-        public ObservableCollection<TabViewModel> TabsVmList { get; set; }
+        public ObservableCollection<TabViewModel> TabsVmList { get; set; } = new ObservableCollection<TabViewModel>();
 
         private TabViewModel _currentTabViewModel = null;
         public TabViewModel CurrentTabViewModel

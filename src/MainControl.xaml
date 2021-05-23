@@ -166,17 +166,13 @@
                 </Button>
             </StackPanel>
 
-            <TextBlock Visibility="{Binding ReadMeVisibility}"
-                       Background="White"
-                       TextWrapping="Wrap"
-                       Margin="4"
-                       ScrollViewer.VerticalScrollBarVisibility="Auto">
-                    <Run Text="版本：2.2.0" />
-                    <LineBreak />
-                    <Run Text="说明：找到最近改动过的文件，并复制到目标目录。" />
-                    <LineBreak />
-                    <Run Text="网址：https://github.com/dengfan/LMFinder" />
-            </TextBlock>
+            <TextBox x:Name="ReadMeTextBox"
+                     Visibility="{Binding ReadMeVisibility}"
+                     AcceptsReturn="True"
+                     IsReadOnly="True"
+                     Background="White"
+                     TextWrapping="Wrap"
+                     Margin="0" />
         </Grid>
 
         <StackPanel Grid.Row="2"
