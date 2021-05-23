@@ -451,6 +451,21 @@ namespace LMFinder
             }
         }
 
+        private void FileListBox_Ignore_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is MenuItem btn)
+            {
+                if (btn.DataContext is FoundItem itemVM && FileListBox.DataContext is TabViewModel vm)
+                {
+                    var exc = itemVM.FilePath;
+                    if (vm.ExcludeFilter.EndsWith(";") == false)
+                    {
+                        exc = string.Concat(";", exc);
+                    }
 
+                    vm.ExcludeFilter += exc;
+                }
+            }
+        }
     }
 }

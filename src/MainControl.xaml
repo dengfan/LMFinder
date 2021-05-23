@@ -138,13 +138,19 @@
                      SelectionMode="Extended">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <Grid>
+                        <Grid Background="Transparent">
                             <TextBlock Text="{Binding FilePath}"
                                        HorizontalAlignment="Left"
                                        VerticalAlignment="Center" />
                             <TextBlock Text="{Binding LastWriteTimeStr}"
                                        HorizontalAlignment="Right"
                                        VerticalAlignment="Center" />
+                            <Grid.ContextMenu>
+                                <ContextMenu>
+                                    <MenuItem Header="将此文件加入排除"
+                                              Click="FileListBox_Ignore_Click" />
+                                </ContextMenu>
+                            </Grid.ContextMenu>
                         </Grid>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
