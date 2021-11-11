@@ -50,6 +50,7 @@
                                DataContext="{Binding CurrentTabViewModel}" />
         </Grid>
 
+        <!--重命名对话框-->
         <Grid x:Name="Dialog1"
               Visibility="Collapsed"
               Background="#66000000">
@@ -71,6 +72,36 @@
                         <Button Content="取消"
                                 Margin="8 0 0 0"
                                 Click="Dialog1_Cancel_Click" />
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+        </Grid>
+
+        <!--创建目标目录对话框-->
+        <Grid x:Name="Dialog2"
+              Visibility="Collapsed"
+              Background="#66000000">
+            <Border Background="White"
+                    BorderBrush="Gray"
+                    BorderThickness="1"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Padding="12"
+                    Width="300">
+                <StackPanel>
+                    <TextBlock Text="目标目录不存在，确定要创建吗？" />
+                    <TextBlock x:Name="Dialog2_DescDirTextBlock"
+                               Margin="0 8"
+                               TextWrapping="Wrap"
+                               Foreground="Red" />
+                    <StackPanel Orientation="Horizontal"
+                                HorizontalAlignment="Right">
+                        <Button x:Name="Dialog2_ConfirmButton"
+                                Content="确定"
+                                Margin="0 0 8 0"
+                                Click="Dialog2_Confirm_Click" />
+                        <Button Content="关闭"
+                                Click="Dialog2_Cancel_Click" />
                     </StackPanel>
                 </StackPanel>
             </Border>

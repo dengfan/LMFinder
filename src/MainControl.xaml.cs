@@ -15,6 +15,7 @@ namespace LMFinder
     /// </summary>
     public partial class MainControl : UserControl
     {
+        private MainWindow _mainWindow;
         private TabViewModel _vm = null;
         private List<FoundItem> _container = new List<FoundItem>();
 
@@ -22,8 +23,10 @@ namespace LMFinder
         {
             InitializeComponent();
 
+            _mainWindow = Application.Current.Windows.Cast<Window>().FirstOrDefault(w => w is MainWindow) as MainWindow;
+
             AddHandler(Keyboard.KeyDownEvent, (KeyEventHandler)HandleKeyDownEvent);
-            ReadMeTextBox.Text = @"版本：2.2.0
+            ReadMeTextBox.Text = @"版本：2.2.1
 说明：找到最近改动过的文件，并复制到目标目录。
 网址：https://github.com/dengfan/LMFinder";
         }
@@ -232,7 +235,15 @@ namespace LMFinder
 
             if (!Directory.Exists(_vm.DestDir))
             {
-                _vm.TipsText = "目标目录不存在，请重新选择。";
+                if (_mainWindow != null)
+                {
+                    _mainWindow.ShowDialog2(_vm.DestDir);
+                }
+                else
+                {
+                    _vm.TipsText = "目标目录不存在，请重新选择。";
+                }
+
                 return;
             }
 

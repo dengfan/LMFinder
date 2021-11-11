@@ -207,5 +207,40 @@ namespace LMFinder
             Dialog1.Visibility = Visibility.Collapsed;
             Dialog1.DataContext = null;
         }
+
+        public void ShowDialog2(string descDir)
+        {
+            Dialog2_DescDirTextBlock.Text = descDir;
+            Dialog2.Visibility = Visibility.Visible;
+        }
+
+        private void Dialog2_Confirm_Click(object sender, RoutedEventArgs e)
+        {
+            var descDir = Dialog2_DescDirTextBlock.Text;
+            if (!string.IsNullOrEmpty(descDir))
+            {
+                try
+                {
+                    Directory.CreateDirectory(descDir);
+                    if (Directory.Exists(descDir))
+                    {
+                        Dialog2_DescDirTextBlock.Text = "目标目录创建成功";
+                        Dialog2_ConfirmButton.Visibility = Visibility.Collapsed;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Dialog2_DescDirTextBlock.Text = ex.Message;
+                }
+            }
+        }
+
+        private void Dialog2_Cancel_Click(object sender, RoutedEventArgs e)
+        {
+            Dialog2_DescDirTextBlock.Text = string.Empty;
+            Dialog2_ConfirmButton.Visibility = Visibility.Visible;
+            Dialog2.Visibility = Visibility.Collapsed;
+            Dialog2.DataContext = null;
+        }
     }
 }

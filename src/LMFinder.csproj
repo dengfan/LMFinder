@@ -164,7 +164,7 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>
-    </PostBuildEvent>
+    <PostBuildEvent>set LIBZ=$(SolutionDir)packages\LibZ.Bootstrap.1.2.0.0\tools\libz.exe
+%25LIBZ%25 inject-dll --assembly LMFinder.exe --include *.dll --move</PostBuildEvent>
   </PropertyGroup>
 </Project>
